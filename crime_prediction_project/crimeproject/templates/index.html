@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url('https://cdn.pixabay.com/photo/2023/06/17/14/51/hacker-8070189_1280.png');
+            background-repeat: no-repeat;
+            background-size: 100vw 100vh;
+            
+        }
+        
+.custom-prediction {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7); /* Black with 70% opacity */
+    position: fixed;
+    background-color: rgba(20, 19, 19, 0.786); /* Black with 70% opacity */
+    color: white;
+    padding: 15px;
+    border-radius: 15px; /* Adjust border-radius as needed */
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the text horizontally */
+    justify-content: center; /* Center the text vertically */
+    top: 60%;
+    left: 60%; /* Adjust the left position as needed */
+
+    transform: translate(-50%, -50%);
+    width: 300px; /* Set the desired width */
+    height: 100px; /* Set the desired height */
+    font-size: 18px; /* Set the desired text size */
+    font-weight: bold; /* Make the text bold */
+}
+
+
+
+        h1 {
+            color: red;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        form {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: -8px;
+    max-width: 1200px; /* Adjust the maximum width as needed */
+    width: 80%; /* Adjust the width percentage as needed */
+    max-height: 800px; /* Adjust the maximum height as needed */
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: 750px;
+}
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: black;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+            background-color: #E1F6FF;
+        }
+
+        button {
+            background-color: black;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        h2 {
+            margin-top: 10px;
+            color: yellow;
+        }
+
+        span {
+            color: #4caf50;
+        }
+
+        .contain {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row; /* Display items horizontally */
+        }
+
+        #crime-info-form {
+            display: none;
+            margin-top: 10px;
+            max-width: 400px;
+            padding: 10px;
+            background-color: lightblue;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 550px;
+            margin-left: 400px; 
+           
+        }
+        h1 {
+                
+                text-shadow: 2px 1px  antiquewhite;
+    color: red;
+    
+        }
+
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <div class="contain">
+        <form id="crime-form">
+            <label for="dayOfWeek">Day of Week:</label>
+            <input type="number" id="dayOfWeek" name="day_of_week" required>
+
+            <label for="month">Month:</label>
+            <input type="number" id="month" name="month" required>
+
+            <label for="latitude">Latitude:</label>
+            <input type="number" id="latitude" name="latitude" step="any" required>
+
+            <label for="longitude">Longitude:</label>
+            <input type="number" id="longitude" name="longitude" step="any" required>
+
+            <label for="hour">Hour:</label>
+            <input type="number" id="hour" name="hour" required>
+
+            <label for="minute">Minute:</label>
+            <input type="number" id="minute" name="minute" required>
+
+            <button type="button" onclick="predictCrime()">Predict crime</button>
+            <!--<button type="button" onclick="openPredictionsPage()">Open Predictions Page</button>-->
+        </form>
+
+        
+    </div>
+    
+    <script>
+        function predictCrime() {
+    const dayOfWeek = document.getElementById('dayOfWeek').value;
+    const month = document.getElementById('month').value;
+    const latitude = document.getElementById('latitude').value;
+    const longitude = document.getElementById('longitude').value;
+    const hour = document.getElementById('hour').value;
+    const minute = document.getElementById('minute').value;
+
+    const payload = {
+        day_of_week: dayOfWeek !== '' ? parseFloat(dayOfWeek) : null,
+        month: month !== '' ? parseInt(month) : null,
+        latitude: latitude !== '' ? parseFloat(latitude) : null,
+        longitude: longitude !== '' ? parseFloat(longitude) : null,
+        hour: hour !== '' ? parseInt(hour) : null,
+        minute: minute !== '' ? parseInt(minute) : null,
+    };
+
+    fetch('/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    return response.json();
+})
+.then(data => {
+                console.log('Received data:', data);
+
+                
+                const act379Prediction = data.prediction_knn.act379;
+                const act13Prediction = data.prediction_knn.act13;
+                const act279Prediction = data.prediction_knn.act279;
+                const act323Prediction = data.prediction_knn.act323;
+                const act363Prediction = data.prediction_knn.act363;
+                const act302Prediction = data.prediction_knn.act302;
+
+                // Check predictions for act379
+                if (act379Prediction.join(',') === '1,0,0,0,0,0') {
+                    showPrediction('Robbery!');
+                } 
+                // Check predictions for act13
+                else if (act13Prediction.join(',') === '0,1,0,0,0,0') {
+                    showPrediction('Gambling!');
+                }
+                // Check predictions for act279
+                else if (act279Prediction.join(',') === '0,0,1,0,0,0') {
+                    showPrediction('Accident!');
+                }
+                // Check predictions for act323
+                else if (act323Prediction.join(',') === '0,0,0,1,0,0') {
+                    showPrediction('Violence!');
+                }
+                // Check predictions for act363
+                else if (act363Prediction.join(',') === '0,0,0,0,1,0') {
+                    showPrediction('Kidnap!');
+                }
+                else if (act302Prediction.join(',') === '0,0,0,0,0,1') {
+                    showPrediction('Murder!');
+                }
+                // ... Add similar checks for other crime types
+
+                // Default case
+                else {
+                    showPrediction('No specific crime detected.');
+                }
+
+                document.getElementById('crime-info-form').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('predictionKnn').innerText = 'Error fetching prediction';
+            });
+        }
+
+        function openPredictionsPage() {
+            window.location.href = '/predictions';
+        }
+
+        function showPrediction(message) {
+    const predictionElement = document.createElement('div');
+    predictionElement.className = 'custom-prediction';
+    predictionElement.textContent = message;
+
+    // Set the position to the right side
+    predictionElement.style.right = '200px';
+    predictionElement.style.top = '460px';
+
+    document.body.appendChild(predictionElement);
+
+    
+}
+    </script>
+</body>
+</html>

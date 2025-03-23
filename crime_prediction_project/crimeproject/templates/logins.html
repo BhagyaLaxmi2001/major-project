@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url('https://media.istockphoto.com/vectors/forensic-working-on-a-crime-scene-vector-id498369666?k=6&m=498369666&s=612x612&w=0&h=gZjdb6pS5BfKzLTwVhk7QywrGRsWy2f7H25lcK_RPXE=');
+            background-repeat: no-repeat;
+            background-size: 100vw 100vh;
+        }
+
+        h1 {
+            color: red;
+            font-style: italic;
+        }
+
+        
+        #b {
+            background-color: #444;
+            color: #fff;
+            text-align: left; /* Align text to the left */
+            padding: 0.5rem;
+            width: 100%; /* Occupy full width */
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .contain {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 225px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-width: 500px;
+            margin-top: -30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: black;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            border-radius: 50px;
+            margin-bottom: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            color: #ff0000;
+            margin-top: 10px;
+        }
+
+        #view {
+            margin-bottom: 180px;
+            width: 1600px;
+            margin-left: -700px;
+        }
+    </style>
+</head>
+
+<body>
+    
+   
+    <nav id="b">
+        <a href="{{ url_for('display_charts', chart_type='day_of_week') }}">Pie Chart</a>
+        <a href="{{ url_for('display_charts', chart_type='accuracies') }}">Accuracies Bar Graph</a>
+        <a href="{{ url_for('display_charts', chart_type='crime_density_map') }}">Density map</a>
+        <a href="/features">Features</a>
+        <!-- Add more links as needed -->
+    </nav>
+
+    <div class="contain">
+        <form method="post">
+            <p>please Login</p>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+
+    <script>
+        function displayFeatures() {
+            window.location.href = '/features'; // Redirect to the predictions page
+        }
+    </script>
+    <footer>
+        <pre>
+
+
+
+
+
+
+
+
+
+
+
+        </pre>
+        
+        
+
+    </footer>
+</body>
+
+</html>
+
